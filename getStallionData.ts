@@ -114,7 +114,7 @@ const listFiles = (): Promise<string[]> => {
     // str variables
     let strArray: any[] = [];
     // make dir
-    await mkdirManager.mkDirAll(['./logs', './csv', './txt']);
+    await mkdirManager.mkDirAll(['./log', './csv', './txt']);
     // header
     const sheetTitleArray: string[] = ['horsename', 'birthday', 'country', 'color', 'service', 'win', 'father', 'mother', 'motherfather', 'inbreed', 'cropwin', 'cropwinnative'];
     // target selector

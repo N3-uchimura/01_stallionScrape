@@ -31,7 +31,7 @@ const makeNumberRange = (start: number, end: number): number[] => [...new Array(
     // texts
     let urlArray: string[][] = [];
     // make dir
-    await mkdirManager.mkDirAll(['./logs', './txt']);
+    await mkdirManager.mkDirAll(['./log', './txt']);
     // initialize
     await scraper.init();
 
