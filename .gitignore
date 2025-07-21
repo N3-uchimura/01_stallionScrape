@@ -1,0 +1,6 @@
+/node_modules/
+/txt/
+/csv/
+/log/
+.env
+package-lock.json

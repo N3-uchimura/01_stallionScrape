@@ -1,0 +1,30 @@
+{
+  "name": "numthree.net.getstallion",
+  "productName": "getstallion",
+  "version": "1.0.1",
+  "description": "application for getstallion",
+  "scripts": {
+    "link": "ts-node getStallionLinks.ts",
+    "data": "ts-node getStallionData.ts"
+  },
+  "keywords": [],
+  "author": {
+    "name": "numthree-uchimura (https://github.com/N3-uchimura/)",
+    "email": "uchimura@numthree.net"
+  },
+  "dependencies": {
+    "@types/readline-sync": "^1.4.8",
+    "csv": "^6.4.1",
+    "iconv-lite": "^0.6.3",
+    "log4js": "^6.9.1",
+    "puppeteer-core": "^24.14.0",
+    "readline-sync": "^1.4.10"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.45",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^3.15.0",
+    "typescript": "^4.9.5"
+  },
+  "license": "MIT"
+}
