@@ -9,10 +9,10 @@
 'use strict';
 
 // define modules
-import iconv from 'iconv-lite'; // encoding
 import { readFile, writeFile } from 'node:fs/promises'; // file system
 import { parse } from 'csv-parse/sync'; // csv parser
 import { stringify } from 'csv-stringify/sync'; // csv stringify
+import iconv from 'iconv-lite'; // encoding
 
 // CSV class
 class CSV {

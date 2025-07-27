@@ -10,7 +10,7 @@
 
 // define modules
 import * as log4js from 'log4js'; // Logger
-import * as path from 'path'; // path
+import * as path from 'node:path'; // path
 
 // Logger class
 class Logger {
