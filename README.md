@@ -3,7 +3,6 @@ stallionScrape
 
 ## Overview
 This is scraping tool for [shuboba profile](http://keiba.no.coocan.jp/).  
-As a first release, collecting crop's results of stallion horse.
 
 ## Requirement
 Windows10 ~  
