@@ -18,11 +18,9 @@ class Logger {
   static logger: any;
   // logger
   static mkdirManager: any;
-  // logger dir path
-  static loggerDir: string;
 
   // construnctor
-  constructor(appname: string, level?: string) {
+  constructor(company: any, appname: string, level?: string) {
     try {
       // log4js options
       let log4jsOptions: any;
@@ -30,8 +28,12 @@ class Logger {
       const loglevel: string = level ?? 'all';
 
       // log mode
-      // logger dir path
-      Logger.loggerDir = path.join(__dirname, '..', 'log');
+      // log dir path
+      const dirpath: string = path.join(
+        process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"]!,
+        company,
+        appname
+      );
       // Logger config
       const prefix: string = `${new Date().toJSON().slice(0, 10)}`;
       // set log4js options
@@ -39,11 +41,11 @@ class Logger {
         appenders: {
           app: {
             type: 'dateFile',
-            filename: path.join(Logger.loggerDir, `${appname}_${prefix}.log`)
+            filename: path.join(dirpath, `${appname}_${prefix}.log`)
           },
           result_raw: {
             type: 'file',
-            filename: path.join(Logger.loggerDir, `${appname}_${prefix}_debug.log`)
+            filename: path.join(dirpath, `${appname}_${prefix}_debug.log`)
           },
           result: {
             type: 'logLevelFilter',
