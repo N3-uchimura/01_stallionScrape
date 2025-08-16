@@ -1,9 +1,9 @@
 /**
- * Mkdir.ts
+ * ELMkdir.ts
  *
- * name：Mkdir
+ * name：ELMkdir
  * function：Mkdir operation for electron
- * updated: 2025/07/21
+ * updated: 2025/04/14
  **/
 
 'use strict';
@@ -19,27 +19,29 @@ class Mkdir {
 
   // construnctor
   constructor(logger: any) {
-    // loggeer instance
+    // logger setting
     Mkdir.logger = logger;
-    Mkdir.logger.debug('mkdir: constructed');
+    Mkdir.logger.debug('mkdir: mkdir initialized.');
   }
 
   // mkDir
   mkDir = async (dir: string): Promise<void> => {
     return new Promise(async (resolve, _) => {
       try {
-        Mkdir.logger.debug('mkDir: mkDir started.');
+        Mkdir.logger.debug('mkdir: mkdir started.');
         // not exists
         if (!existsSync(dir)) {
           // make dir
           await mkdir(dir);
-          Mkdir.logger.debug('mkDir: mkDir finished.');
+
+          Mkdir.logger.debug('mkdir: mkdir completed.');
         } else {
-          Mkdir.logger.error('mkDir: already exists.');
+          Mkdir.logger.debug('already exists.');
         }
         resolve();
-      } catch (e: unknown) {
-        Mkdir.logger.error(e);
+      } catch (err: unknown) {
+        // error
+        Mkdir.logger.error(err);
         resolve();
       }
     });
@@ -49,7 +51,7 @@ class Mkdir {
   mkDirAll = async (dirs: string[]): Promise<void> => {
     return new Promise(async (resolve1, _) => {
       try {
-        Mkdir.logger.debug('mkDir: mkDirAll started.');
+        Mkdir.logger.debug('mkdir: all mkdir started.');
         // make all dir
         Promise.all(
           dirs.map(async (dir: string): Promise<void> => {
@@ -59,22 +61,24 @@ class Mkdir {
                 if (!existsSync(dir)) {
                   // make dir
                   await mkdir(dir);
-                  Mkdir.logger.debug('mkDir: mkDirAll finished.');
+                  resolve2();
                 } else {
-                  Mkdir.logger.error('mkDir: already exists.');
+                  // error
+                  throw Error('already exists.');
                 }
-                resolve2();
               } catch (err: unknown) {
-                Mkdir.logger.error(err);
+                // error
                 resolve2();
               }
             });
           })
         ).then(() => resolve1());
+        Mkdir.logger.debug('mkdir: mkDirAll started.');
 
         // make dir
       } catch (e: unknown) {
-        Mkdir.logger.error(e);
+        // error
+        Mkdir.logger(e);
         resolve1();
       }
     });

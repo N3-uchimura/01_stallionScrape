@@ -1,25 +1,65 @@
 {
   "name": "keiba-getstallion",
-  "productName": "keiba-getstallion",
-  "version": "1.1.1-alpha.1",
-  "description": "application for getstallion",
+  "productName": "keibagetstallion",
+  "version": "1.2.0",
+  "description": "Electron application keibagetstallion",
+  "main": "build/getStallion.js",
   "scripts": {
-    "start": "ts-node getStallion.ts"
+    "build": "tsc && chcp 65001",
+    "start": "npm run build && electron .",
+    "build-win": "npm run build && electron-builder --win --x64"
   },
-  "keywords": [],
+  "keywords": [
+    "scraper",
+    "horceracing",
+    "stallion",
+    "free"
+  ],
   "author": {
     "name": "numthree-uchimura (https://github.com/N3-uchimura/)",
     "email": "uchimura@numthree.net"
   },
   "dependencies": {
     "csv": "^6.4.1",
+    "electron-log": "^5.4.2",
     "iconv-lite": "^0.6.3",
-    "log4js": "^6.9.1",
-    "puppeteer-core": "^24.14.0"
+    "node-cache": "^5.1.2",
+    "puppeteer-core": "^24.14.0",
+    "typescript": "^5.9.2"
   },
   "devDependencies": {
-    "@types/node": "^17.0.45",
-    "ts-node": "^10.9.2"
+    "@types/node": "^24.1.0",
+    "electron": "^37.2.6",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "net.numthree.keibagetstallion",
+    "productName": "keibagetstallion",
+    "files": [
+      "build/**/*",
+      "package.json",
+      "!dist/**/*",
+      "!src/**/*",
+      "!.gitignore",
+      "!.vscode"
+    ],
+    "extraResources": [
+      "assets",
+      "www/**/*"
+    ],
+    "squirrelWindows": {},
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/keiba128.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "license": "MIT"
 }

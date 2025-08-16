@@ -6,11 +6,17 @@
 
 /** const */
 export namespace myConst {
+  export const DEVMODE: boolean = true;
   export const COMPANY_NAME: string = 'nthree';
   export const APP_NAME: string = 'stallionscrape';
   export const LOG_LEVEL: string = 'info';
+  export const DEFAULT_ENCODING: string = "utf8";
   export const CSV_ENCODING: string = 'SJIS';
   export const FOREIGN_URL: string = 'a-z';
+  export const WINDOW_WIDTH: number = 1200;
+  export const WINDOW_HEIGHT: number = 1000;
+  export const FINISHED_MESSAGE_JA: string = '完了しました。デスクトップにCSVファイルを出力しました。';
+  export const FINISHED_MESSAGE_EN: string = 'completed. csv file is on desktop.';
   export const BASE_URL: string = 'http://keiba.no.coocan.jp/data/_index_';
   // header
   export const SHEET_TITLES: string[] = ['horsename', 'birthday', 'country', 'color', 'service', 'win', 'father', 'mother', 'motherfather', 'inbreed', 'cropwin', 'cropwinnative'];

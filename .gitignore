@@ -3,5 +3,8 @@
 /txt/
 /csv/
 /log/
+/dist/
+/output/
+/build/
 .env
 package-lock.json

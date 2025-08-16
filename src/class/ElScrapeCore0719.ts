@@ -1,32 +1,23 @@
 /**
- * ScrapeCore.ts
+ * ElScrapeCore.ts
  *
- * class：Scrape
- * function：scraping site
- * updated: 2025/07/21
+ * class：ElScrape
+ * function：scraping site with native chrome
+ * updated: 2025/07/19
  **/
 
 'use strict';
 
 // consts
-const USER_ROOT_PATH: string = process.env[process.platform == 'win32' ? 'USERPROFILE' : 'HOME'] ?? ''; // user path
+const USER_ROOT_PATH: string = process.env[process.platform == "win32" ? "USERPROFILE" : "HOME"] ?? ''; // user path
 const CHROME_EXEC_PATH1: string = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'; // chrome.exe path1
 const CHROME_EXEC_PATH2: string = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'; // chrome.exe path2
 const CHROME_EXEC_PATH3: string = '\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'; // chrome.exe path3
 const DISABLE_EXTENSIONS: string = '--disable-extensions'; // disable extension
-const ALLOW_INSECURE: string = '--allow-running-insecure-content'; // allow insecure content
-const IGNORE_CERT_ERROR: string = '--ignore-certificate-errors'; // ignore cert-errors
-const NO_SANDBOX: string = '--no-sandbox'; // no sandbox
-const DISABLE_SANDBOX: string = '--disable-setuid-sandbox'; // no setup sandbox
-const DISABLE_DEV_SHM: string = '--disable-dev-shm-usage'; // no dev shm
-const DISABLE_GPU: string = '--disable-gpu'; // no gpu
-const NO_FIRST_RUN: string = '--no-first-run'; // no first run
-const NO_ZYGOTE: string = '--no-zygote'; // no zygote
-const MAX_SCREENSIZE: string = '--start-maximized'; // max screen
-const DISABLE_BALANCED_MODE: string = '--disable-features=HttpsFirstBalancedModeAutoEnable';
+
 // define modules
-import * as path from 'node:path'; // path
-import * as fs from 'node:fs'; // fs
+import * as path from "node:path"; // path
+import * as fs from "node:fs"; // fs
 import { setTimeout } from 'node:timers/promises'; // wait for seconds
 import puppeteer from 'puppeteer-core'; // Puppeteer for scraping
 
@@ -34,7 +25,7 @@ import puppeteer from 'puppeteer-core'; // Puppeteer for scraping
 // puppeteer options
 interface puppOption {
   headless: boolean; // display mode
-  executablePath: string; // exe path
+  executablePath: string; // exepath
   ignoreDefaultArgs: string[]; // ignore extensions
   args: string[]; // args
 }
@@ -44,6 +35,7 @@ export class Scrape {
   static logger: any; // logger
   static browser: any; // static browser
   static page: any; // static page
+  static pages: any[]; // static page
   private _result: boolean; // scrape result
   private _height: number; // body height
 
@@ -62,23 +54,12 @@ export class Scrape {
   init(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: initialize mode.');
+        Scrape.logger.debug('scrape: initialize mode.');
         const puppOptions: puppOption = {
           headless: true, // no display mode
           executablePath: getChromePath(), // chrome.exe path
           ignoreDefaultArgs: [DISABLE_EXTENSIONS], // ignore extensions
-          args: [
-            NO_SANDBOX,
-            DISABLE_SANDBOX,
-            DISABLE_DEV_SHM,
-            DISABLE_GPU,
-            NO_FIRST_RUN,
-            NO_ZYGOTE,
-            ALLOW_INSECURE,
-            IGNORE_CERT_ERROR,
-            MAX_SCREENSIZE,
-            DISABLE_BALANCED_MODE
-          ], // args
+          args: [], // args
         };
         // lauch browser
         Scrape.browser = await puppeteer.launch(puppOptions);
@@ -91,7 +72,7 @@ export class Scrape {
         });
         // mimic agent
         await Scrape.page.setUserAgent(generateRandomUA());
-        Scrape.logger.trace('scrape: initialize finished.');
+        Scrape.logger.debug('scrape: initialize finished.');
         // resolved
         resolve();
 
@@ -107,7 +88,7 @@ export class Scrape {
   getUrl(): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: getUrl mode.');
+        Scrape.logger.debug('scrape: getUrl mode.');
         // resolved
         resolve(await Scrape.page.url());
 
@@ -123,7 +104,7 @@ export class Scrape {
   getTitle(): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: getTitle mode.');
+        Scrape.logger.debug('scrape: getTitle mode.');
         // resolved
         resolve(await Scrape.page.title);
 
@@ -139,7 +120,7 @@ export class Scrape {
   getHref(elem: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: getHref mode.');
+        Scrape.logger.debug('scrape: getHref mode.');
         // resolved
         resolve(await Scrape.page.$eval(elem, (elm: any) => elm.href));
 
@@ -155,7 +136,7 @@ export class Scrape {
   pressEnter(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: pressEnter mode.');
+        Scrape.logger.debug('scrape: pressEnter mode.');
         // press enter key
         await Scrape.page.keyboard.press('Enter');
         // resolved
@@ -173,8 +154,9 @@ export class Scrape {
   doGo(targetPage: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doGo mode.');
+        Scrape.logger.debug('scrape: doGo mode.');
         // goto target page
+        Scrape.logger.debug(targetPage);
         await Scrape.page.goto(targetPage);
         // get page height
         const height = await Scrape.page.evaluate(() => {
@@ -197,7 +179,7 @@ export class Scrape {
   doGoBack(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doGoBack mode.');
+        Scrape.logger.debug('scrape: doGoBack mode.');
         // go back
         await Scrape.page.goBack();
         // resolved
@@ -215,7 +197,7 @@ export class Scrape {
   doClick(elem: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doClick mode.');
+        Scrape.logger.debug('scrape: doClick mode.');
         // click target element
         await Scrape.page.$$eval(elem, (elements: any) => elements[0].click());
         // resolved
@@ -233,7 +215,7 @@ export class Scrape {
   doType(elem: string, value: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doType mode.');
+        Scrape.logger.debug('scrape: doType mode.');
         // type element on specified value
         await Scrape.page.type(elem, value, { delay: 100 });
         // resolved
@@ -251,7 +233,7 @@ export class Scrape {
   doClear(elem: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doClear mode.');
+        Scrape.logger.debug('scrape: doClear mode.');
         // clear the textbox
         await Scrape.page.$eval(elem, (element: any) => (element.value = ''));
         // resolved
@@ -269,7 +251,7 @@ export class Scrape {
   doSelect(elem: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doSelect mode.');
+        Scrape.logger.debug('scrape: doSelect mode.');
         // select dropdown element
         await Scrape.page.select(elem);
         // resolved
@@ -287,7 +269,7 @@ export class Scrape {
   doScreenshot(path: string): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doScreenshot mode.');
+        Scrape.logger.debug('scrape: doScreenshot mode.');
         // take screenshot of window
         await Scrape.page.screenshot({ path: path });
         // resolved
@@ -305,7 +287,7 @@ export class Scrape {
   mouseWheel(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: mouseWheel mode.');
+        Scrape.logger.debug('scrape: mouseWheel mode.');
         // mouse wheel to bottom
         await Scrape.page.mouse.wheel({ deltaY: this._height - 200 });
         // resolved
@@ -323,13 +305,13 @@ export class Scrape {
   doSingleEval(selector: string, property: string): Promise<string> {
     return new Promise(async (resolve, _) => {
       try {
-        Scrape.logger.trace('scrape: doSingleEval mode.');
+        //Scrape.logger.debug('scrape: doSingleEval mode.');
         // target item
         const exists: boolean = await Scrape.page.$eval(selector, () => true).catch(() => false);
 
         // no result
         if (!exists) {
-          Scrape.logger.trace('not exists');
+          Scrape.logger.debug('not exists');
           resolve('');
 
         } else {
@@ -349,12 +331,10 @@ export class Scrape {
               resolve(data);
 
             } else {
-              Scrape.logger.trace('nodata error');
               resolve('');
             }
 
           } else {
-            Scrape.logger.trace('target null');
             resolve('');
           }
         }
@@ -370,7 +350,7 @@ export class Scrape {
   doMultiEval(selector: string, property: string): Promise<string[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doMultiEval mode.');
+        //Scrape.logger.debug('scrape: doMultiEval mode.');
         // data set
         let datas: string[] = [];
         // target list
@@ -401,9 +381,50 @@ export class Scrape {
   doWaitFor(time: number): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doWaitFor mode.');
+        //Scrape.logger.debug('scrape: doWaitFor mode.');
         // wait for time
         await setTimeout(time);
+        resolve();
+
+      } catch (e: unknown) {
+        Scrape.logger.error(e);
+        // reject
+        reject();
+      }
+    });
+  }
+
+  // waitSelector
+  doWaitSelector(elem: string, time: number): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        Scrape.logger.debug('scrape: doWaitSelector mode.');
+        // target item
+        const exists: boolean = await Scrape.page.$eval(elem, () => true).catch(() => false);
+
+        // if element exists
+        if (exists) {
+          // wait for loading selector
+          await Scrape.page.waitForSelector(elem, { timeout: time });
+          // resolved
+          resolve();
+        }
+
+      } catch (e: unknown) {
+        Scrape.logger.error(e);
+        // reject
+        reject();
+      }
+    });
+  }
+
+  // wait for navigaion
+  doWaitForNav(time: number): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        Scrape.logger.debug('scrape: doWaitForNav mode.');
+        // wait for time
+        await Scrape.page.waitForNavigation({ waitUntil: 'networkidle2', timeout: time });
         resolve();
 
       } catch (e: unknown) {
@@ -418,7 +439,7 @@ export class Scrape {
   doCheckSelector(elem: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doCheckSelector mode.');
+        //Scrape.logger.debug('scrape: doCheckSelector mode.');
         // target item
         const exists: boolean = await Scrape.page.$eval(elem, () => true).catch(() => false);
         // return true/false
@@ -436,7 +457,7 @@ export class Scrape {
   doClose(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doClose mode.');
+        Scrape.logger.debug('scrape: doClose mode.');
         // close browser
         await Scrape.browser.close();
         // close page
@@ -456,7 +477,7 @@ export class Scrape {
   doReload(): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        Scrape.logger.trace('scrape: doReload mode.');
+        Scrape.logger.debug('scrape: doReload mode.');
         // close browser
         await Scrape.page.reload();
         // resolved
@@ -481,7 +502,6 @@ export class Scrape {
     return this._result;
   }
 }
-
 // get chrome absolute path
 const getChromePath = (): string => {
   // chrome tmp path

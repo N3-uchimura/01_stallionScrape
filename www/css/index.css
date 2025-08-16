@@ -1,0 +1,96 @@
+/*
+/* index.css
+*/
+
+@charset "utf-8";
+
+body {
+  width: 95%;
+  margin: auto;
+  text-align: center;
+}
+
+h1 {
+  margin: 10px 0;
+  padding: 5px 0;
+  font-size: 1.7rem;
+  color: #fff;
+  background-color: #134A63;
+}
+
+h3 {
+  margin: 10px 0 0;
+  color: #134A63;
+  font-weight: bolder;
+}
+
+p {
+  margin: 10px 0 0;
+  padding: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  margin: 0;
+  padding: 0;
+}
+
+::placeholder {
+  color: gray;
+  font-size: 1.4rem;
+  text-align: left;
+}
+
+.display-none {
+  display: none;
+}
+
+.operation_area {
+  margin: 30px 0;
+  font-size: 1rem;
+}
+
+.status_area {
+  margin: 30px 0;
+  font-size: 0.8rem;
+}
+
+.operation_area #racingdate {
+  font-size: 0.8rem;
+}
+
+.account_area {
+  width: 100%;
+  margin: 10px auto;
+}
+
+.account_area ul li {
+  width: 100%;
+  margin: 20px 0;
+}
+
+.account_area ul li label {
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: left;
+}
+
+.account_area ul li input {
+  width: 100%;
+  max-width: 500px;
+  height: 50px;
+  margin: 10px auto;
+  font-size: 1.1rem;
+}
+
+.account_area ul li p {
+  font-size: 0.8rem;
+  color: red;
+}
