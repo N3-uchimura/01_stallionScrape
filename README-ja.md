@@ -13,7 +13,7 @@
 
 ## Overview
 
-This is scraping tool for [shuboba profile](http://keiba.no.coocan.jp/).
+種牡馬 Profile[shuboba profile](http://keiba.no.coocan.jp/)のスクレイピングツールです。
 
 ## Requirement
 
