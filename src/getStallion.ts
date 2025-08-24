@@ -17,7 +17,7 @@ import { readFile, writeFile } from 'node:fs/promises'; // filesystem
 import { BrowserWindow, app, ipcMain, Tray, Menu, nativeImage } from 'electron'; // electron
 import NodeCache from "node-cache"; // for cache
 import ELLogger from './class/ElLogger'; // logger
-import { Scrape } from './class/ElScrapeCore0719'; // scraper
+import { Scrape } from './class/ElScrapeCore0810'; // scraper
 import Dialog from './class/ElDialog0721'; // dialog
 import CSV from './class/ElCsv0414'; // csvmaker
 
