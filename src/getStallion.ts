@@ -302,7 +302,7 @@ ipcMain.on('scrape', async (event: any, arg: any) => {
     // add to two-dimentional array
     urlArray.push(foreignUrlArray);
     // final array
-    const finalUrlArray: string[] = urlArray[0].flat();
+    const finalUrlArray: string[] = urlArray.flat();
     // delete last one
     finalUrlArray.pop();
 
@@ -333,7 +333,6 @@ ipcMain.on('scrape', async (event: any, arg: any) => {
         const result: string = await puppScraper.doSingleEval(mySelector.SELECTORS[i], 'textContent');
         // get into array
         myHorseObj[myConst.SHEET_TITLES[i]] = result;
-
       }
       // switch on language
       if (language == 'japanese') {
