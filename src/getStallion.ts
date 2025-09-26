@@ -253,6 +253,8 @@ ipcMain.on('scrape', async (event: any, arg: any) => {
     logger.info('scrape: scraping start.');
     // finish message
     let endmessage: string;
+    // url message
+    let urlmessage: string;
     // status message
     let statusmessage: string;
     // texts
@@ -263,6 +265,14 @@ ipcMain.on('scrape', async (event: any, arg: any) => {
     const language = cacheMaker.get('language') ?? '';
     // initialize
     await puppScraper.init();
+    // switch on language
+    if (language == 'japanese') {
+      // set finish message
+      urlmessage = 'URL取得中...';
+    } else {
+      // set finish message
+      urlmessage = 'Getting stallion urls...';
+    }
 
     // scraping loop
     for await (const i of makeNumberRange(1, 10)) {
@@ -286,6 +296,12 @@ ipcMain.on('scrape', async (event: any, arg: any) => {
 
       } catch (err) {
         logger.error(err);
+      } finally {
+        // URL
+        event.sender.send('statusUpdate', {
+          status: urlmessage,
+          target: i
+        });
       }
     }
     logger.info('scrape: scraping has finished.');
